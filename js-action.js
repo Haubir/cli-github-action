@@ -1,24 +1,15 @@
 const core = require('@actions/core');
-const tc = require('@actions/tool-cache');
+const github = require('@actions/github');
 
-clientId = "https://github.com/Haubir/cli-github-action"
-
-async function setup() {
-    // Get the version of tool to be installed
-    const version = core.getInput('version');
-
-    function getDownloadURL() {
-        return "";
-    }
-
-    // Download the specific version of the tool, e.g. as a tarball
-    const pathToTarball = await tc.downloadTool(getDownloadURL());
-
-    // Extract the tarball onto the runner
-    const pathToCLI = await tc.extractTar(pathToTarball);
-
-    // Expose the tool by adding it to the PATH
-    core.addPath(pathToCLI);
+try {
+    // `who-to-greet` input defined in action metadata file
+    const nameToGreet = core.getInput('who-to-greet');
+    console.log(`Hello ${nameToGreet}!`);
+    const time = (new Date()).toTimeString();
+    core.setOutput("time", time);
+    // Get the JSON webhook payload for the event that triggered the workflow
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
+} catch (error) {
+    core.setFailed(error.message);
 }
-
-module.exports = setup
