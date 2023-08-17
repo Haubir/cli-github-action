@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: haubir/cli-github-action
+        uses: haubir/cli-github-action@v1.1
         with:
           who-to-greet: 'Haubir'
       # Use the output from the `hello` step
